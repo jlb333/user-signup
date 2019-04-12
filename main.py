@@ -1,74 +1,41 @@
 from flask import Flask, request, redirect, render_template
+import os
+import jinja2
+
+template_dir = os.path.join(os.path.dirname(__file__),
+    'templates')
+
+jinja_env = jinja2.Environment(
+    loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
 
 
 app = Flask(__name__)
-
 app.config['DEBUG'] = True
 
-page_header = """
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Signup</title>
-        <style type="text/css">
-            .error {
-                color: red;
-            }
-        </style>
-    </head>
-    <body>
-        <h1>Signup</h1>
-        """
-
-page_footer = """
-    </body>
-</html>
-"""
-
-user_name_form = """
-    <form action ="/username" method ="post"
-        <label for="username"> Username </label>
-            <input type="text" name="username" value="">
-    </form>
-    """
-
-password_form = """
-    <form action ="/" method ="post"
-        <label for ="password"> Password</label>
-            <input type="text" name="password" value ="">
-        <label for ="verify password">Verify Password</label>
-            <input type="text" name="verify password" value="">
-    </form>
-    """
-
-email_form = """
-    <form action ="/" method ="post"
-        <label for ="email"> Email (optional)</label>
-            <input type="text" name="email" value="">
-    </form>
-    """
-
-submit_query = """
-    <form>
-        <input type="submit">
-    </form>
-    """
 
 @app.route("/")
 def index():
-    content = page_header + user_name_form + password_form + email_form + submit_query + page_footer
-    return content 
+    template = jinja_env.get_template('inputs.html')
+    return template.render()
 
-@app.route("/username", methods=['POST'])
-def user_name():
+
+@app.route("/validation", methods=['POST'])
+def validate_username():
     username = request.form['username']
 
     username_error_msg = "Not a valid username; must be 3-20 characters in length"
     
-    if username == "" or len(username) < 3 or len(username) > 20:
-        return username_error_msg
+    template = jinja_env.get_template('inputs.html')
+
+    for char in username:
+        if char in username == " ":
+            return template.render(username_error_msg= username_error_msg) 
+
+    if len(username) < 3 or len(username) > 20:
+        username = ""
+        return template.render(username_error_msg= username_error_msg)
     else:
-        return username
+        return template.render(username = username)
 
 
 
