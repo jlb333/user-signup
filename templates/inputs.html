@@ -6,28 +6,31 @@
     <label>
         Username 
     <input type="text" name="username" value="{{username}}"/>
-    <p class="error">{{username_error_msg}}</p>
+    <p class="error">{{username_error}}</p>
     </label>
 
     <br>
 
     <label>
         Password
-    <input type="password" name="password" value=""/>
+    <input type="password" name="password" value="{{password}}"/>
+    <p class="error">{{password_error}}</p>
     </label>
 
     <br>
 
     <label>
         Verify Password
-    <input type="password" name="verify_password" value=""/>
+    <input type="password" name="verify_password" value="{{verify_password}}"/>
+    <p class="error">{{verify_password_error}}</p>
     </label>
 
     <br>
 
     <label>
         Email (optional)
-    <input type="text" name="email" value=""/>
+    <input type="text" name="email" value="{{email}}"/>
+    <p class="error">{{email_error}}</p>
     </label>
 
     <br>
